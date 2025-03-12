@@ -43,8 +43,11 @@ document.addEventListener('DOMContentLoaded', function() {
 
     // 验证 YouTube URL
     function isValidYouTubeUrl(url) {
+        // 移除 URL 中的查询参数（如 ?si=xxx）
+        const urlWithoutParams = url.split('?')[0];
+        // 支持 youtube.com/watch?v= 和 youtu.be/ 两种格式
         const pattern = /^(https?:\/\/)?(www\.)?(youtube\.com\/watch\?v=|youtu\.be\/)([a-zA-Z0-9_-]{11})$/;
-        return pattern.test(url);
+        return pattern.test(urlWithoutParams);
     }
 
     // 显示状态信息
@@ -107,7 +110,9 @@ document.addEventListener('DOMContentLoaded', function() {
 
     // 从 URL 中提取视频 ID
     function extractVideoId(url) {
-        const match = url.match(/(?:youtube\.com\/watch\?v=|youtu\.be\/)([a-zA-Z0-9_-]{11})/);
+        // 移除 URL 中的查询参数（如 ?si=xxx）
+        const urlWithoutParams = url.split('?')[0];
+        const match = urlWithoutParams.match(/(?:youtube\.com\/watch\?v=|youtu\.be\/)([a-zA-Z0-9_-]{11})/);
         return match ? match[1] : null;
     }
 
