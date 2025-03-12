@@ -1,0 +1,74 @@
+# Compiled files
+*.crx
+*.zip
+*.xpi
+*.vsix
+*.nex
+
+# Package Manager Cache
+node_modules/
+bower_components/
+jspm_packages/
+yarn-error.log
+
+# Distribution
+dist/
+build/
+release/
+
+# Temporary files
+*.tmp
+*.swp
+*~
+\#*\#
+.*.swp
+._*
+
+# IDE and Editor specific files
+.idea/
+.vscode/
+*.iml
+*.log
+*.DS_Store
+Thumbs.db
+
+# Chrome Extension Dev files (optional, but good practice)
+.env
+.env.*
+
+# Debugging
+debug.log
+
+# Credentials (VERY IMPORTANT!)
+*.key
+*.pem
+*.p12
+*.password
+
+# Git LFS files (if you're using Git LFS)
+.gitattributes
+
+# Node.js specific
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+.pnpm-debug.log*
+
+#  If you are using a module bundler like Webpack or Parcel
+/public/build/
+
+#  If you use a manifest version that creates a "_metadata" folder
+_metadata/
+
+# Optional:  If you are using typescript, exclude the compiled javascript files
+/js/
+/src/**/*.js
+/src/**/*.map
+
+# Optional: If you use Sass/SCSS, exclude the compiled CSS files
+/css/
+
+# Other optional exclusions:
+/coverage/  # Code coverage reports
+*.db         # Databases
+*.sqlite*    # SQLite databases
