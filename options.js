@@ -282,7 +282,15 @@ document.addEventListener('DOMContentLoaded', async function() {
     // 下载字幕文件
     async function downloadSubtitleFile(content, videoId, format) {
         try {
-            const blob = new Blob([content], { type: 'text/plain;charset=utf-8' });
+            // 根据格式设置正确的MIME类型
+            const mimeTypes = {
+                'vtt': 'text/vtt',
+                'srt': 'text/srt',
+                'txt': 'text/plain'
+            };
+            const mimeType = mimeTypes[format] || 'text/plain';
+            
+            const blob = new Blob([content], { type: `${mimeType};charset=utf-8` });
             const url = URL.createObjectURL(blob);
             
             // 获取视频标题
@@ -291,6 +299,7 @@ document.addEventListener('DOMContentLoaded', async function() {
                 const videoTitle = await getVideoTitle(videoId);
                 // 移除不合法的文件名字符
                 const safeTitle = videoTitle.replace(/[<>:"/\\|?*]/g, '_');
+                // 确保扩展名与format参数匹配
                 filename = `${safeTitle}.${format}`;
             } catch (error) {
                 console.warn('无法获取视频标题，使用默认文件名', error);
