@@ -3,7 +3,8 @@ const testUrls = [
     'https://youtu.be/GiEsyOyk1m4?si=xPECLiIHKMwF_lsv',
     'https://www.youtube.com/watch?si=xPECLiIHKMwF_lsv&v=GiEsyOyk1m4&feature=youtu.be',
     'https://www.youtube.com/watch?v=GiEsyOyk1m4&t=17s',
-    'https://www.youtube.com/watch?v=GiEsyOyk1m4&list=PLOXw6I10VTv8VOvPNVQ8c4D4NyMRMotXh&index=20'
+    'https://www.youtube.com/watch?v=GiEsyOyk1m4&list=PLOXw6I10VTv8VOvPNVQ8c4D4NyMRMotXh&index=20',
+    'https://www.youtube.com/live/hciNKcLwSes?si=0TqGb4yFEIcxTJzr'
 ];
 
 // URL验证函数
@@ -20,10 +21,16 @@ function isValidYouTubeUrl(url) {
         if (urlObj.hostname.includes('youtu.be')) {
             videoId = urlObj.pathname.split('/')[1];
         }
-        // 处理 youtube.com 标准链接
+        // 处理 youtube.com 标准链接和直播链接
         else if (urlObj.hostname.includes('youtube.com')) {
             const params = new URLSearchParams(urlObj.search);
-            videoId = params.get('v');
+            if (urlObj.pathname.includes('/live/')) {
+                // 处理直播链接格式
+                videoId = urlObj.pathname.split('/live/')[1]?.split('?')[0];
+            } else {
+                // 处理标准链接格式
+                videoId = params.get('v');
+            }
         }
         
         // 验证视频ID是否存在且格式正确（11位字母数字、下划线或连字符）
@@ -40,8 +47,12 @@ function extractVideoId(url) {
         if (urlObj.hostname.includes('youtu.be')) {
             return urlObj.pathname.split('/')[1];
         } else if (urlObj.hostname.includes('youtube.com')) {
-            const params = new URLSearchParams(urlObj.search);
-            return params.get('v');
+            if (urlObj.pathname.includes('/live/')) {
+                return urlObj.pathname.split('/live/')[1]?.split('?')[0];
+            } else {
+                const params = new URLSearchParams(urlObj.search);
+                return params.get('v');
+            }
         }
         return null;
     } catch (e) {
