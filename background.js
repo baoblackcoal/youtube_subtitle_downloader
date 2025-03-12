@@ -1,5 +1,11 @@
 // 监听扩展图标点击事件
-chrome.action.onClicked.addListener((tab) => {
+chrome.action.onClicked.addListener(async (tab) => {
+    // 检查是否是 YouTube 视频页面
+    const include_youtube = tab.url.includes('youtube.com') || tab.url.includes('youtu.be');
+    if (tab.url && include_youtube) {
+        // 在打开选项页面之前，先存储当前视频的 URL
+        await chrome.storage.local.set({ currentVideoUrl: tab.url });
+    }
     chrome.runtime.openOptionsPage();
 });
 

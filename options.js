@@ -1,12 +1,21 @@
-document.addEventListener('DOMContentLoaded', function() {
+document.addEventListener('DOMContentLoaded', async function() {
     const videoUrlInput = document.getElementById('videoUrl');
     const getSubtitlesButton = document.getElementById('getSubtitles');
     const pasteAndGetButton = document.getElementById('pasteAndGet');
     const statusDiv = document.getElementById('status');
     const autoDownloadCheckbox = document.getElementById('autoDownload');
 
-    // 设置默认视频链接
-    videoUrlInput.value = 'https://www.youtube.com/watch?v=oc6RV5c1yd0';
+    // 尝试从storage获取当前视频URL
+    try {
+        const result = await chrome.storage.local.get('currentVideoUrl');
+        if (result.currentVideoUrl) {
+            videoUrlInput.value = result.currentVideoUrl;
+            // 清除存储的URL，避免影响下次打开
+            await chrome.storage.local.remove('currentVideoUrl');
+        }
+    } catch (error) {
+        console.error('获取存储的视频URL失败:', error);
+    }
 
     // 获取来源标签页的信息
     chrome.tabs.query({active: true, lastFocusedWindow: true}, async function(tabs) {

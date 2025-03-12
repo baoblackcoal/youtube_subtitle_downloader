@@ -8,7 +8,8 @@
     "scripting",
     "clipboardRead",
     "downloads",
-    "tabs"
+    "tabs",
+    "storage"
   ],
   "host_permissions": [
     "https://www.youtube.com/*",
