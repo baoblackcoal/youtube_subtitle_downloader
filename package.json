@@ -4,7 +4,9 @@
   "description": "",
   "main": "background.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "prebuild": "if exist dist rmdir /s /q dist",
+    "build": "mkdir dist && copy manifest.json dist\\ && copy *.js dist\\ && copy *.html dist\\ && copy *.css dist\\ && xcopy /E /I images dist\\images"
   },
   "keywords": [],
   "author": "",
