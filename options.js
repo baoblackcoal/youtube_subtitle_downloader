@@ -97,9 +97,14 @@ document.addEventListener('DOMContentLoaded', async function() {
         statusDiv.className = `status ${type}`;
         statusDiv.style.display = 'block';
         
+        // 自动隐藏非加载状态的消息
         if (type !== 'loading') {
             setTimeout(() => {
-                statusDiv.style.display = 'none';
+                statusDiv.style.opacity = '0';
+                setTimeout(() => {
+                    statusDiv.style.display = 'none';
+                    statusDiv.style.opacity = '1';
+                }, 300);
             }, 3000);
         }
     }
@@ -315,4 +320,35 @@ document.addEventListener('DOMContentLoaded', async function() {
             throw error;
         }
     }
+
+    // 添加输入框动画效果
+    videoUrlInput.addEventListener('focus', function() {
+        this.parentElement.classList.add('focused');
+    });
+
+    videoUrlInput.addEventListener('blur', function() {
+        this.parentElement.classList.remove('focused');
+    });
+
+    // 为单选按钮添加动画效果
+    const radioButtons = document.querySelectorAll('input[type="radio"]');
+    radioButtons.forEach(radio => {
+        radio.addEventListener('change', function() {
+            // 移除同组中所有选中效果
+            const name = this.getAttribute('name');
+            document.querySelectorAll(`input[name="${name}"] + .radio-label`).forEach(label => {
+                label.classList.remove('checked');
+            });
+            
+            // 添加当前选中效果
+            if (this.checked) {
+                this.nextElementSibling.classList.add('checked');
+            }
+        });
+        
+        // 初始化选中状态
+        if (radio.checked) {
+            radio.nextElementSibling.classList.add('checked');
+        }
+    });
 }); 
