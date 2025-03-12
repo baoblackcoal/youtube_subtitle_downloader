@@ -130,6 +130,13 @@ document.addEventListener('DOMContentLoaded', function() {
             
             let convertedSubtitles = '';
             
+            // 创建一个临时元素来解码 HTML 实体
+            const decodeHTML = (html) => {
+                const textarea = document.createElement('textarea');
+                textarea.innerHTML = html;
+                return textarea.value;
+            };
+            
             switch (targetFormat) {
                 case 'vtt':
                     convertedSubtitles = 'WEBVTT\n\n';
@@ -138,10 +145,11 @@ document.addEventListener('DOMContentLoaded', function() {
                         const start = formatTime(parseFloat(node.getAttribute('start')));
                         const duration = parseFloat(node.getAttribute('dur') || '0');
                         const end = formatTime(parseFloat(node.getAttribute('start')) + duration);
+                        const text = decodeHTML(node.textContent);
                         
                         convertedSubtitles += `${i + 1}\n`;
                         convertedSubtitles += `${start} --> ${end}\n`;
-                        convertedSubtitles += `${node.textContent}\n\n`;
+                        convertedSubtitles += `${text}\n\n`;
                     }
                     break;
                     
@@ -151,16 +159,18 @@ document.addEventListener('DOMContentLoaded', function() {
                         const start = formatTimeSRT(parseFloat(node.getAttribute('start')));
                         const duration = parseFloat(node.getAttribute('dur') || '0');
                         const end = formatTimeSRT(parseFloat(node.getAttribute('start')) + duration);
+                        const text = decodeHTML(node.textContent);
                         
                         convertedSubtitles += `${i + 1}\n`;
                         convertedSubtitles += `${start} --> ${end}\n`;
-                        convertedSubtitles += `${node.textContent}\n\n`;
+                        convertedSubtitles += `${text}\n\n`;
                     }
                     break;
                     
                 case 'txt':
                     for (let i = 0; i < textNodes.length; i++) {
-                        convertedSubtitles += `${textNodes[i].textContent}\n`;
+                        const text = decodeHTML(textNodes[i].textContent);
+                        convertedSubtitles += `${text}\n`;
                     }
                     break;
                     
