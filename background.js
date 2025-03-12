@@ -10,8 +10,40 @@ chrome.runtime.onMessage.addListener((request, sender, sendResponse) => {
             .then(response => sendResponse(response))
             .catch(error => sendResponse({ success: false, error: error.message }));
         return true; // 保持消息通道打开
+    } else if (request.action === 'getVideoInfo') {
+        getVideoInfo(request.videoId)
+            .then(response => sendResponse(response))
+            .catch(error => sendResponse({ success: false, error: error.message }));
+        return true; // 保持消息通道打开
     }
 });
+
+// 获取视频信息
+async function getVideoInfo(videoId) {
+    try {
+        const videoUrl = `https://www.youtube.com/watch?v=${videoId}`;
+        const response = await fetch(videoUrl);
+        if (!response.ok) {
+            throw new Error('无法访问视频页面');
+        }
+        const html = await response.text();
+
+        // 提取视频标题
+        const titleMatch = html.match(/"title":"([^"]+)"/);
+        if (!titleMatch) {
+            throw new Error('无法获取视频标题');
+        }
+
+        const title = titleMatch[1].replace(/\\u0026/g, '&')
+                                 .replace(/\\"/g, '"')
+                                 .replace(/\\\\/g, '\\');
+
+        return { success: true, title: title };
+    } catch (error) {
+        console.error('获取视频信息失败:', error);
+        return { success: false, error: error.message };
+    }
+}
 
 // 获取字幕的主要函数
 async function getSubtitles({ videoId, subtitleType }) {

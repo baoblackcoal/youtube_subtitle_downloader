@@ -1,30 +1,18 @@
 document.addEventListener('DOMContentLoaded', function() {
     const videoUrlInput = document.getElementById('videoUrl');
-    const pasteUrlButton = document.getElementById('pasteUrl');
     const getSubtitlesButton = document.getElementById('getSubtitles');
     const pasteAndGetButton = document.getElementById('pasteAndGet');
     const statusDiv = document.getElementById('status');
     const autoDownloadCheckbox = document.getElementById('autoDownload');
 
     // 设置默认视频链接
-    videoUrlInput.value = '';
+    videoUrlInput.value = 'https://www.youtube.com/watch?v=oc6RV5c1yd0';
 
     // 获取来源标签页的信息
     chrome.tabs.query({active: true, lastFocusedWindow: true}, async function(tabs) {
         const sourceTab = tabs[0];
         if (sourceTab && sourceTab.url.includes('youtube.com/watch')) {
             videoUrlInput.value = sourceTab.url;
-        }
-    });
-
-    // 粘贴按钮点击事件
-    pasteUrlButton.addEventListener('click', async () => {
-        try {
-            const text = await navigator.clipboard.readText();
-            videoUrlInput.value = text;
-            showStatus('已粘贴链接', 'success');
-        } catch (err) {
-            showStatus('无法访问剪贴板', 'error');
         }
     });
 
@@ -202,12 +190,43 @@ document.addEventListener('DOMContentLoaded', function() {
         return `${hours}:${minutes}:${secs},${ms}`;
     }
 
+    // 获取视频标题
+    async function getVideoTitle(videoId) {
+        return new Promise((resolve, reject) => {
+            chrome.runtime.sendMessage({
+                action: 'getVideoInfo',
+                videoId: videoId
+            }, response => {
+                if (chrome.runtime.lastError) {
+                    reject(chrome.runtime.lastError);
+                    return;
+                }
+                if (response.success && response.title) {
+                    resolve(response.title);
+                } else {
+                    reject(new Error('无法获取视频标题'));
+                }
+            });
+        });
+    }
+
     // 下载字幕文件
     async function downloadSubtitleFile(content, videoId, format) {
         try {
             const blob = new Blob([content], { type: 'text/plain;charset=utf-8' });
             const url = URL.createObjectURL(blob);
-            const filename = `subtitles_${videoId}.${format}`;
+            
+            // 获取视频标题
+            let filename;
+            try {
+                const videoTitle = await getVideoTitle(videoId);
+                // 移除不合法的文件名字符
+                const safeTitle = videoTitle.replace(/[<>:"/\\|?*]/g, '_');
+                filename = `${safeTitle}.${format}`;
+            } catch (error) {
+                console.warn('无法获取视频标题，使用默认文件名', error);
+                filename = `subtitles_${videoId}.${format}`;
+            }
             
             await chrome.downloads.download({
                 url: url,

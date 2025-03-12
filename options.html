@@ -12,8 +12,11 @@
         </div>
         
         <div class="input-group">
-            <input type="text" id="videoUrl" placeholder="输入 YouTube 视频链接">
-            <button id="pasteUrl">粘贴</button>
+            <input type="text" id="videoUrl" placeholder="输入 YouTube 视频链接" value="https://www.youtube.com/watch?v=oc6RV5c1yd0">
+            <div class="button-group">
+                <button id="getSubtitles" class="primary">获取字幕</button>
+                <button id="pasteAndGet" class="secondary">粘贴获取字幕</button>
+            </div>
         </div>
 
         <div class="subtitle-options">
@@ -43,11 +46,6 @@
         <div class="auto-download">
             <input type="checkbox" id="autoDownload" checked>
             <label for="autoDownload">自动下载字幕</label>
-        </div>
-
-        <div class="button-group">
-            <button id="getSubtitles" class="primary">获取字幕</button>
-            <button id="pasteAndGet" class="secondary">粘贴获取字幕</button>
         </div>
 
         <div id="status" class="status"></div>
