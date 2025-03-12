@@ -3,7 +3,6 @@ document.addEventListener('DOMContentLoaded', async function() {
     const getSubtitlesButton = document.getElementById('getSubtitles');
     const pasteAndGetButton = document.getElementById('pasteAndGet');
     const statusDiv = document.getElementById('status');
-    const autoDownloadCheckbox = document.getElementById('autoDownload');
 
     // 尝试从storage获取当前视频URL
     try {
@@ -117,7 +116,6 @@ document.addEventListener('DOMContentLoaded', async function() {
 
         const subtitleType = document.querySelector('input[name="subtitleType"]:checked').value;
         const format = document.querySelector('input[name="format"]:checked').value;
-        const autoDownload = autoDownloadCheckbox.checked;
 
         try {
             // 发送消息给 background script 获取字幕
@@ -134,9 +132,7 @@ document.addEventListener('DOMContentLoaded', async function() {
                 if (response.success) {
                     try {
                         const convertedSubtitles = convertSubtitleFormat(response.subtitles, format);
-                        if (autoDownload) {
-                            await downloadSubtitleFile(convertedSubtitles, videoId, format);
-                        }
+                        await downloadSubtitleFile(convertedSubtitles, videoId, format);
                         showStatus('字幕下载成功！', 'success');
                     } catch (error) {
                         showStatus('转换字幕格式失败: ' + error.message, 'error');
