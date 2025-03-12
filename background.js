@@ -1,3 +1,10 @@
+// 在插件安装后自动打开 options 页面
+chrome.runtime.onInstalled.addListener((details) => {
+    if (details.reason === 'install') {
+        chrome.runtime.openOptionsPage();
+    }
+});
+
 // 监听扩展图标点击事件
 chrome.action.onClicked.addListener(async (tab) => {
     // 检查是否是 YouTube 视频页面
