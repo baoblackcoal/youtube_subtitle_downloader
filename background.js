@@ -103,8 +103,14 @@ async function extractSubtitleData(html, subtitleType) {
             throw new Error('找不到所选类型的英文字幕');
         }
 
-        // 获取字幕内容
-        const subtitleResponse = await fetch(subtitleTrack.baseUrl);
+        // 处理字幕 URL，确保是完整的 URL
+        let subtitleUrl = subtitleTrack.baseUrl;
+        if (subtitleUrl.startsWith('api/') || subtitleUrl.startsWith('/api/')) {
+            subtitleUrl = `https://www.youtube.com/${subtitleUrl.startsWith('/') ? subtitleUrl.slice(1) : subtitleUrl}`;
+        }
+
+        console.log('处理后的字幕 URL:', subtitleUrl);
+        const subtitleResponse = await fetch(subtitleUrl);
         if (!subtitleResponse.ok) {
             throw new Error('获取字幕内容失败');
         }
