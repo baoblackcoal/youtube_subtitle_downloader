@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Test Extension</title>
+    <script>
+        // 测试工具函数
+        const TestUtils = {
+            // 测试add函数
+            testAdd(a, b) {
+                return new Promise((resolve, reject) => {
+                    // 监听来自content script的响应
+                    window.addEventListener('message', function handler(event) {
+                        if (event.data.type === 'TEST_ADD_RESULT') {
+                            window.removeEventListener('message', handler);
+                            resolve(event.data.result);
+                        } else if (event.data.type === 'TEST_ADD_ERROR') {
+                            window.removeEventListener('message', handler);
+                            reject(new Error(event.data.error));
+                        }
+                    });
+
+                    // 发送测试消息
+                    window.postMessage({
+                        type: 'TEST_ADD',
+                        a: a,
+                        b: b
+                    }, '*');
+                });
+            }
+        };
+
+        // 暴露给测试框架使用
+        window.TestUtils = TestUtils;
+    </script>
+</head>
+<body>
+    <h1>Testing Chrome Extension</h1>
+    <div id="test-results"></div>
+</body>
+</html> 

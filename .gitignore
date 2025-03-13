@@ -1,3 +1,21 @@
+# Python 忽略规则
+*.pyc
+*.pyo
+__pycache__/
+.venv/
+venv/
+.pytest_cache/
+env/
+dist/
+build/
+*.egg-info/
+*.egg
+.DS_Store # macOS 忽略文件
+*.log # 日志文件
+*.sqlite # SQLite 数据库文件
+
+
+
 # Compiled files
 *.crx
 *.zip
