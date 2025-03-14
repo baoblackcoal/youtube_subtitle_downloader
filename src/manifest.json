@@ -1,0 +1,50 @@
+{
+  "manifest_version": 3,
+  "name": "YouTube 字幕下载器",
+  "version": "1.0.0",
+  "description": "下载 YouTube 视频的字幕",
+  "permissions": [
+    "activeTab",
+    "scripting",
+    "clipboardRead",
+    "downloads",
+    "tabs",
+    "storage"
+  ],
+  "host_permissions": [
+    "https://www.youtube.com/*",
+    "https://video.google.com/*"
+  ],
+  "action": {
+    "default_title": "YouTube 字幕下载器",
+    "default_icon": {
+      "48": "assets/images/logo48.png",
+      "128": "assets/images/logo128.png"
+    }
+  },
+  "options_ui": {
+    "page": "views/options.html",
+    "open_in_tab": true
+  },
+  "background": {
+    "service_worker": "background.js",
+    "type": "module"
+  },
+  "content_scripts": [
+    {
+      "matches": ["*://*.youtube.com/*"],
+      "js": ["content.js"],
+      "type": "module"
+    }
+  ],
+  "icons": {
+    "48": "assets/images/logo48.png",
+    "128": "assets/images/logo128.png"
+  },
+  "web_accessible_resources": [
+    {
+      "resources": ["assets/*", "utils/*", "services/*", "controllers/*", "models/*"],
+      "matches": ["<all_urls>"]
+    }
+  ]
+} 

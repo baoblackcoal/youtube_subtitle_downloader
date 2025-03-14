@@ -1,20 +1,70 @@
+# Python
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+.Python
+env/
+build/
+develop-eggs/
+dist/
+downloads/
+eggs/
+.eggs/
+lib/
+lib64/
+parts/
+sdist/
+var/
+*.egg-info/
+.installed.cfg
+*.egg
+
+# Virtual environments
+venv/
+ENV/
+.env
+
+# IDE
+.idea/
+.vscode/
+*.swp
+*.swo
+
+# Node
+node_modules/
+npm-debug.log
+yarn-debug.log
+yarn-error.log
+
+# Testing
+test/downloads/
+.pytest_cache/
+.coverage
+htmlcov/
+
+# Chrome Extension
+*.pem
+*.crx
+*.zip
+
+# OS-specific
+.DS_Store
+Thumbs.db
+*.lnk
+
 # Python 忽略规则
 *.pyc
 *.pyo
-__pycache__/
 .venv/
 venv/
 .pytest_cache/
-env/
 dist/
 build/
 *.egg-info/
 *.egg
-.DS_Store # macOS 忽略文件
 *.log # 日志文件
 *.sqlite # SQLite 数据库文件
-
-
 
 # Compiled files
 *.crx
@@ -24,14 +74,10 @@ build/
 *.nex
 
 # Package Manager Cache
-node_modules/
 bower_components/
 jspm_packages/
-yarn-error.log
 
 # Distribution
-dist/
-build/
 release/
 
 # Temporary files
@@ -43,12 +89,9 @@ release/
 ._*
 
 # IDE and Editor specific files
-.idea/
-.vscode/
 *.iml
 *.log
 *.DS_Store
-Thumbs.db
 
 # Chrome Extension Dev files (optional, but good practice)
 .env
@@ -67,9 +110,6 @@ debug.log
 .gitattributes
 
 # Node.js specific
-npm-debug.log*
-yarn-debug.log*
-yarn-error.log*
 .pnpm-debug.log*
 
 #  If you are using a module bundler like Webpack or Parcel

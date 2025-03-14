@@ -1,16 +1,24 @@
 {
   "name": "ytbs_chrome_pupup",
   "version": "1.0.0",
-  "description": "",
-  "main": "background.js",
+  "description": "YouTube 字幕下载器 Chrome 扩展",
+  "main": "src/background.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1",
+    "test": "echo \"测试: 执行 'pytest test/test_download.py -v' 运行测试\" && exit 0",
     "prebuild": "if exist dist rmdir /s /q dist",
-    "build": "mkdir dist && copy manifest.json dist\\ && copy *.js dist\\ && copy *.html dist\\ && copy *.css dist\\ && xcopy /E /I images dist\\images"
+    "build": "mkdir dist && xcopy /E /I src\\* dist\\ && cd dist && mkdir test && cd ..",
+    "zip": "cd dist && powershell Compress-Archive -Path * -DestinationPath ..\\youtube_subtitle_downloader_v1.0.0.zip -Force && cd ..",
+    "package": "npm run prebuild && npm run build && npm run zip",
+    "clean": "if exist dist rmdir /s /q dist"
   },
-  "keywords": [],
+  "keywords": [
+    "youtube",
+    "subtitle",
+    "chrome-extension",
+    "downloader"
+  ],
   "author": "",
-  "license": "ISC",
+  "license": "MIT",
   "dependencies": {
     "sharp": "^0.33.5"
   }
