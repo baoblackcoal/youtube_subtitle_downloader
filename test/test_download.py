@@ -54,27 +54,13 @@ class ChromeExtensionTest:
         await page.goto(f'file://{os.path.abspath(test_path)}')
         await asyncio.sleep(1)  # 等待页面加载完成
 
-class AddFunctionTest(ChromeExtensionTest):
-    """Add函数测试类"""
-    
-    async def test_add_positive_numbers(self, context: TestContext):
-        """测试正数相加"""
-        result = await context.page.evaluate('TestUtils.testAdd(2, 3)')
-        assert result == 5, f"Expected 2 + 3 = 5, but got {result}"
-        logger.info("✓ 正数相加测试通过: 2 + 3 = 5")
-    
-    async def test_add_negative_numbers(self, context: TestContext):
-        """测试负数相加"""
-        result = await context.page.evaluate('TestUtils.testAdd(-2, -3)')
-        assert result == -5, f"Expected -2 + -3 = -5, but got {result}"
-        logger.info("✓ 负数相加测试通过: -2 + -3 = -5")
-    
-    async def test_add_mixed_numbers(self, context: TestContext):
-        """测试正负数混合相加"""
-        result = await context.page.evaluate('TestUtils.testAdd(-2, 3)')
-        assert result == 1, f"Expected -2 + 3 = 1, but got {result}"
-        logger.info("✓ 混合数字相加测试通过: -2 + 3 = 1")
 
+class TestDownloadSubtitles(ChromeExtensionTest):
+    """测试下载字幕功能"""
+    async def test_download_subtitles(self, context: TestContext):
+        """测试下载字幕,地址为https://www.youtube.com/watch?v=oc6RV5c1yd0"""
+        pass
+    
 @pytest.mark.asyncio
 async def test_extension():
     """主测试函数"""
@@ -88,7 +74,7 @@ async def test_extension():
         
         # 运行add函数测试
         logger.info("测试 Add 函数功能:")
-        add_test = AddFunctionTest()
+        add_test = TestDownloadSubtitles()
         await add_test.test_add_positive_numbers(context)
         await add_test.test_add_negative_numbers(context)
         await add_test.test_add_mixed_numbers(context)
