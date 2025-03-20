@@ -173,7 +173,10 @@ async def test_extension():
     )
     
     try:
-         await asyncio.sleep(2)
+         await asyncio.sleep(20)
         
     finally:
         await ChromeExtensionTest.cleanup_context(context) 
+
+if __name__ == "__main__":
+    asyncio.run(test_extension())
